@@ -1,9 +1,16 @@
 import pygame
 from fighters import Fighter, Move, ATTACK, DEFENSE
 from random import choice
+from enum import Enum
 
 WIDTH, HEIGHT = 800, 650
 FPS = 60
+
+class States(Enum):
+    PLAYER_CHOICE = 1
+    ENEMY_TURN = 2
+    ENEMY_MESSAGE = 3
+    MENU_TIMEOUT = 4
 
 class Game():
     def __init__(self):
@@ -31,7 +38,7 @@ class Game():
         self.box_rect = pygame.Rect(10, 480, WIDTH-20, 160)
 
         self.selected = 0
-        self.state = "PLAYER_CHOICE"
+        self.state = States.PLAYER_CHOICE
         self.message = ""
         self.turn_start = None
 
@@ -44,22 +51,22 @@ class Game():
         pygame.quit()
 
     def update(self):
-        if self.state == "MENU_TIMEOUT":
+        if self.state == States.MENU_TIMEOUT:
             if pygame.time.get_ticks() - self.turn_start > 1000:
-                self.state = "PLAYER_CHOICE"
+                self.state = States.PLAYER_CHOICE
 
-        elif self.state == "ENEMY_TURN":
+        elif self.state == States.ENEMY_TURN:
             if pygame.time.get_ticks() - self.turn_start > 1000:
                 move = choice(self.fighter2.moves)
                 while self.fighter2.mana < move.mana_cost:
                     move = choice(self.fighter2.moves)
                 self.message = self.fighter2.use_move(move, self.fighter1)
-                self.state = "ENEMY_MESSAGE"
+                self.state = States.ENEMY_MESSAGE
                 self.turn_start = pygame.time.get_ticks()
 
-        elif self.state == "ENEMY_MESSAGE":
+        elif self.state == States.ENEMY_MESSAGE:
             if pygame.time.get_ticks() - self.turn_start > 1000:
-                self.state = "PLAYER_CHOICE"
+                self.state = States.PLAYER_CHOICE
     
 
     def handle_events(self):
@@ -67,7 +74,7 @@ class Game():
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.KEYDOWN:
-                if self.state == "PLAYER_CHOICE":
+                if self.state == States.PLAYER_CHOICE:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_DOWN:
                         self.selected = (self.selected + 1) % len(self.fighter1.moves)
                     if event.key == pygame.K_LEFT or event.key == pygame.K_UP:
@@ -76,10 +83,10 @@ class Game():
                         move = self.fighter1.moves[self.selected]
                         self.message = self.fighter1.use_move(move, self.fighter2)
                         if self.message == False:
-                            self.state = "MENU_TIMEOUT"
+                            self.state = States.MENU_TIMEOUT
                             self.message = "Not enough mana!"
                         else:
-                            self.state = "ENEMY_TURN"
+                            self.state = States.ENEMY_TURN
 
                         self.turn_start = pygame.time.get_ticks()
 
@@ -104,7 +111,7 @@ class Game():
         pygame.draw.rect(self.screen, (55, 55, 61), self.box_rect, border_radius=10)
         pygame.draw.rect(self.screen, (71, 71, 81), self.box_rect, 5, 10)
 
-        if self.state == "PLAYER_CHOICE":
+        if self.state == States.PLAYER_CHOICE:
             for i, move in enumerate(self.fighter1.moves):
                 if i == self.selected:
                     color = (255, 255, 255)   # bright = selected
