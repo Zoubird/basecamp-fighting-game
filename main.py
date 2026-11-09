@@ -27,7 +27,7 @@ class Game():
             Move("Mogging contest", 60, 30, "Mogs you to death!")
         ])
         self.fighter2 = Fighter("sashu", 300, 150, [
-            Move("Checkmate", 100, 50, "Checkmates you with his 2 nights and remaining bishop."),
+            Move("Checkmate", 100, 50, "Checkmates you with his 2 knights and remaining bishop."),
             Move("Fart", 25, 0, "Lets out a really smelly fart."),
             Move("Monster", 50, 25, "Heals 50hp after drinking a mango-flavoured monstercan.", DEFENSE)
         ])
@@ -115,7 +115,7 @@ class Game():
             for i, move in enumerate(self.fighter1.moves):
                 if i == self.selected:
                     color = (255, 255, 255)   # bright = selected
-                    text = "> " + move.name
+                    text = "> " + move.name + f" (+{move.power} power)"
                 else:
                     color = (145, 145, 145)   # dim = not selected
                     text = "  " + move.name
