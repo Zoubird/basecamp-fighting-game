@@ -25,10 +25,14 @@ class Fighter():
             if move.type == ATTACK:
                 self.mana -= move.mana_cost
                 opponent.take_damage(move.power)
+                print(f"{opponent.name} hp: {opponent.hp}")
+                print(f"{self.name} mana: {self.mana}")
                 return f"{self.name} used {move.name}!"
             elif move.type == DEFENSE:
                 self.mana -= move.mana_cost
                 self.heal(move.power)
+                print(f"{self.name} hp: {self.hp}")
+                print(f"{self.name} mana: {self.mana}")
                 return f"{self.name} healed themselves! (+{move.power} hp)" if self.hp < 200 else f"{self.name} healed themselves to full hp!"
         else:
             return False
