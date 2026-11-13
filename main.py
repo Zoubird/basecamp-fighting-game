@@ -28,8 +28,8 @@ class Game():
 
         # Fighters
         self.reset()
-        self.f1 = self.load_image('./assets/milou back.png', 0.6)
-        self.f2 = self.load_image('./assets/milou front.png', 0.4)
+        self.f1 = self.load_image('./assets/lady1 back.png', 0.6)
+        self.f2 = self.load_image('./assets/lady1 front.png', 0.4)
         self.press_R_key = self.load_image('./assets/r-up.png', 1.6)
         self.bg = pygame.image.load('./assets/bg.jpg').convert_alpha()
         self.bg = pygame.transform.scale(self.bg, (self.WIDTH, self.HEIGHT))
